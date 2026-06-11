@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>曾桑與溫桑的日文訪談＆文法練習 🌾</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入可愛的圓潤字體 -->
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'M PLUS Rounded 1c', 'Nunito', sans-serif;
+            background-color: #FEF9E7; /* 溫暖的米黃色背景 */
+            color: #333;
+        }
+        .fade-in {
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* 自訂選項按鈕樣式 */
+        input[type="radio"]:checked + span {
+            background-color: #D4EFDF;
+            border-color: #27AE60;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen pb-20">
+
+    <header class="bg-orange-100 shadow-sm py-8 text-center border-b-4 border-orange-300">
+        <h1 class="text-3xl md:text-4xl font-bold text-orange-800 mb-2">🍙 曾桑＆溫桑的日文訪談特訓 🍍</h1>
+        <p class="text-orange-600 text-lg">FOOD TAIPEI 第三度參展準備・N5~N4 文法互動問卷</p>
+    </header>
+
+    <main id="app-container" class="max-w-4xl mx-auto mt-8 px-4">
+        <!-- 內容將透過 JavaScript 動態生成 -->
+    </main>
+
+    <script>
+        // 定義所有的訪談問題與文法測驗資料
+        const appData = [
+            {
+                q1: {
+                    id: "q1",
+                    jp: "<ruby>曾<rt>そう</rt></ruby>さんと<ruby>温<rt>おん</rt></ruby>さんの<ruby>会社<rt>かいしゃ</rt></ruby>は、どんな<ruby>商品<rt>しょうひん</rt></ruby>を<ruby>売<rt>う</rt></ruby>っていますか。",
+                    cn: "曾桑和溫桑的公司賣什麼樣的商品呢？",
+                    hints: [
+                        "<ruby>台湾<rt>たいわん</rt></ruby>の<ruby>花蓮<rt>かれん</rt></ruby>と<ruby>台東<rt>たいとう</rt></ruby>の<ruby>美味<rt>おい</rt></ruby>しいお<ruby>米<rt>こめ</rt></ruby>を<ruby>売<rt>う</rt></ruby>っています。",
+                        "お<ruby>米<rt>こめ</rt></ruby>や、お<ruby>米<rt>こめ</rt></ruby>で<ruby>作<rt>つく</rt></ruby>ったお<ruby>菓子<rt>かし</rt></ruby>（<ruby>米<rt>こめ</rt></ruby>パイナップルケーキなど）を<ruby>売<rt>う</rt></ruby>っています。"
+                    ]
+                },
+                q2: {
+                    id: "q2",
+                    jp: "どうして<ruby>花蓮<rt>かれん</rt></ruby>と<ruby>台東<rt>たいとう</rt></ruby>のお<ruby>米<rt>こめ</rt></ruby>を<ruby>選<rt>えら</rt></ruby>んだんですか。",
+                    cn: "為什麼選擇花蓮和台東的米呢？ (N4 んですか)",
+                    hints: [
+                        "<ruby>水<rt>みず</rt></ruby>がきれいで、<ruby>自然<rt>しぜん</rt></ruby>が<ruby>豊<rt>ゆた</rt></ruby>かですから。",
+                        "<ruby>台湾<rt>たいわん</rt></ruby>で<ruby>一番<rt>いちばん</rt></ruby><ruby>美味<rt>おい</rt></ruby>しいお<ruby>米<rt>こめ</rt></ruby>だと<ruby>思<rt>おも</rt></ruby>っていますから。"
+                    ]
+                },
+                quiz: {
+                    title: "文法練習 ① (て形・辞書形・た形)",
+                    questions: [
+                        { jp: "お<ruby>米<rt>こめ</rt></ruby>を（　　）ください。", options: ["<ruby>洗<rt>あら</rt></ruby>う", "<ruby>洗<rt>あら</rt></ruby>って", "<ruby>洗<rt>あら</rt></ruby>った"], ans: 1, exp: "て形 + ください (請做...)" },
+                        { jp: "ご<ruby>飯<rt>はん</rt></ruby>を（　　）<ruby>前<rt>まえ</rt></ruby>に、<ruby>手<rt>て</rt></ruby>を<ruby>洗<rt>あら</rt></ruby>います。", options: ["<ruby>食<rt>た</rt></ruby>べる", "<ruby>食<rt>た</rt></ruby>べて", "<ruby>食<rt>た</rt></ruby>べた"], ans: 0, exp: "辞書形 + 前に (在...之前)" },
+                        { jp: "<ruby>花蓮<rt>かれん</rt></ruby>へ（　　）ことがありますか。", options: ["<ruby>行<rt>い</rt></ruby>く", "<ruby>行<rt>い</rt></ruby>って", "<ruby>行<rt>い</rt></ruby>った"], ans: 2, exp: "た形 + ことがあります (有...的經驗)" }
+                    ]
+                }
+            },
+            {
+                q1: {
+                    id: "q3",
+                    jp: "お<ruby>米<rt>こめ</rt></ruby>のパイナップルケーキ（<ruby>米<rt>こめ</rt></ruby>鳳梨酥）はどうやって<ruby>作<rt>つく</rt></ruby>りますか。",
+                    cn: "米鳳梨酥是怎麼做的呢？ (N5 どうやって)",
+                    hints: [
+                        "<ruby>小麦粉<rt>こむぎこ</rt></ruby>の<ruby>代<rt>か</rt></ruby>わりに、100％のお<ruby>米<rt>こめ</rt></ruby>の<ruby>粉<rt>こな</rt></ruby>を<ruby>使<rt>つか</rt></ruby>います。",
+                        "<ruby>台湾<rt>たいわん</rt></ruby>のパイナップルとお<ruby>米<rt>こめ</rt></ruby>で<ruby>作<rt>つく</rt></ruby>ります。"
+                    ]
+                },
+                q2: {
+                    id: "q4",
+                    jp: "ポン<ruby>菓子<rt>がし</rt></ruby>（<ruby>蓬<rt>ぽん</rt></ruby><ruby>發<rt>ふぁ</rt></ruby><ruby>米<rt>み</rt></ruby><ruby>餅<rt>びん</rt></ruby>）は、どんな<ruby>人<rt>ひと</rt></ruby>に<ruby>食<rt>た</rt></ruby>べてもらいたいですか。",
+                    cn: "蓬發米餅想讓什麼樣的人吃呢？ (N4 てもらいたい)",
+                    hints: [
+                        "<ruby>添加物<rt>てんかぶつ</rt></ruby>がありませんから、<ruby>子供<rt>こども</rt></ruby>に<ruby>安心<rt>あんしん</rt></ruby>して<ruby>食<rt>た</rt></ruby>べてもらいたいです。",
+                        "<ruby>健康<rt>けんこう</rt></ruby>を<ruby>気<rt>き</rt></ruby>にする<ruby>人<rt>ひと</rt></ruby>に<ruby>食<rt>た</rt></ruby>べてほしいです。"
+                    ]
+                },
+                quiz: {
+                    title: "文法練習 ② (て形・辞書形・た形)",
+                    questions: [
+                        { jp: "パイナップルケーキを（　　）みます。", options: ["<ruby>食<rt>た</rt></ruby>べる", "<ruby>食<rt>た</rt></ruby>べて", "<ruby>食<rt>た</rt></ruby>べた"], ans: 1, exp: "て形 + みます (試著做...看看)" },
+                        { jp: "<ruby>私<rt>わたし</rt></ruby>は<ruby>美味<rt>おい</rt></ruby>しいお<ruby>菓子<rt>かし</rt></ruby>を（　　）ことができます。", options: ["<ruby>作<rt>つく</rt></ruby>る", "<ruby>作<rt>つく</rt></ruby>って", "<ruby>作<rt>つく</rt></ruby>った"], ans: 0, exp: "辞書形 + ことができます (能夠/可以...)" },
+                        { jp: "<ruby>子供<rt>こども</rt></ruby>がポン<ruby>菓子<rt>がし</rt></ruby>を（　　）<ruby>後<rt>あと</rt></ruby>で、ジュースを<ruby>飲<rt>の</rt></ruby>みました。", options: ["<ruby>食<rt>た</rt></ruby>べる", "<ruby>食<rt>た</rt></ruby>べて", "<ruby>食<rt>た</rt></ruby>べた"], ans: 2, exp: "た形 + 後で (在...之後)" }
+                    ]
+                }
+            },
+            {
+                q1: {
+                    id: "q5",
+                    jp: "<ruby>今年<rt>ことし</rt></ruby>、「FOOD TAIPEI（フード<ruby>台北<rt>たいぺい</rt></ruby>）」に<ruby>何回<rt>なんかい</rt></ruby><ruby>出展<rt>しゅってん</rt></ruby>しますか／<ruby>参加<rt>さんか</rt></ruby>しますか。",
+                    cn: "今年是第幾次參加 FOOD TAIPEI 呢？",
+                    hints: [
+                        "<ruby>今年<rt>ことし</rt></ruby>で３<ruby>回目<rt>かいめ</rt></ruby>になります。",
+                        "３<ruby>回<rt>かい</rt></ruby><ruby>参加<rt>さんか</rt></ruby>します。<ruby>今年<rt>ことし</rt></ruby>も<ruby>頑張<rt>がんば</rt></ruby>ります！"
+                    ]
+                },
+                q2: {
+                    id: "q6",
+                    jp: "「FOOD TAIPEI」で、お<ruby>客<rt>きゃく</rt></ruby>さんに<ruby>何<rt>なに</rt></ruby>を<ruby>伝<rt>つた</rt></ruby>えたいですか。",
+                    cn: "在 FOOD TAIPEI 想傳達給客人什麼呢？ (N4 たい)",
+                    hints: [
+                        "<ruby>台湾<rt>たいわん</rt></ruby>のお<ruby>米<rt>こめ</rt></ruby>のすばらしさ・<ruby>美味<rt>おい</rt></ruby>しさを<ruby>伝<rt>つた</rt></ruby>えたいです。",
+                        "<ruby>私<rt>わたし</rt></ruby>たちの<ruby>新<rt>あたら</rt></ruby>しいお<ruby>菓子<rt>かし</rt></ruby>をみんなに<ruby>知<rt>し</rt></ruby>ってほしいです。"
+                    ]
+                },
+                quiz: {
+                    title: "文法練習 ③ (て形・辞書形・た形)",
+                    questions: [
+                        { jp: "<ruby>今年<rt>ことし</rt></ruby>もフード<ruby>台北<rt>たいぺい</rt></ruby>に（　　）います。", options: ["<ruby>参加<rt>さんか</rt></ruby>する", "<ruby>参加<rt>さんか</rt></ruby>して", "<ruby>参加<rt>さんか</rt></ruby>した"], ans: 1, exp: "て形 + います (正在.../狀態的持續)" },
+                        { jp: "<ruby>明日<rt>あした</rt></ruby>、<ruby>展示会<rt>てんじかい</rt></ruby>へ（　　）つもりです。", options: ["<ruby>行<rt>い</rt></ruby>く", "<ruby>行<rt>い</rt></ruby>って", "<ruby>行<rt>い</rt></ruby>った"], ans: 0, exp: "辞書形 + つもりです (打算...)" },
+                        { jp: "もっと<ruby>台湾<rt>たいわん</rt></ruby>のお<ruby>米<rt>こめ</rt></ruby>を（　　）ほうがいいですよ。", options: ["<ruby>食<rt>た</rt></ruby>べる", "<ruby>食<rt>た</rt></ruby>べて", "<ruby>食<rt>た</rt></ruby>べた"], ans: 2, exp: "た形 + ほうがいいです (做...比較好/建議)" }
+                    ]
+                }
+            },
+            {
+                q1: {
+                    id: "q7",
+                    jp: "お<ruby>米<rt>こめ</rt></ruby>のビジネスで、<ruby>一番<rt>いちばん</rt></ruby><ruby>大変<rt>たいへん</rt></ruby>なことは<ruby>何<rt>なん</rt></ruby>ですか。",
+                    cn: "米業的生意中，最辛苦的事情是什麼呢？",
+                    hints: [
+                        "<ruby>天気<rt>てんき</rt></ruby>によって、お<ruby>米<rt>こめ</rt></ruby>の<ruby>味<rt>あじ</rt></ruby>が<ruby>変<rt>か</rt></ruby>わることです。",
+                        "<ruby>毎年<rt>まいとし</rt></ruby>、<ruby>美味<rt>おい</rt></ruby>しいお<ruby>米<rt>こめ</rt></ruby>の<ruby>品質<rt>ひんしつ</rt></ruby>をキープするのが<ruby>大変<rt>たいへん</rt></ruby>です。"
+                    ]
+                },
+                q2: {
+                    id: "q8",
+                    jp: "これから、どんな<ruby>新<rt>あたら</rt></ruby>しい<ruby>商品<rt>しょうひん</rt></ruby>を<ruby>作<rt>つく</rt></ruby>るつもりですか。",
+                    cn: "今後打算做什麼樣的新商品呢？ (N4 つもり)",
+                    hints: [
+                        "100%お<ruby>米<rt>こめ</rt></ruby>のパンを<ruby>作<rt>つく</rt></ruby>るつもりです。",
+                        "もっと<ruby>健康<rt>けんこう</rt></ruby>にいいお<ruby>米<rt>こめ</rt></ruby>の<ruby>飲<rt>の</rt></ruby>み<ruby>物<rt>もの</rt></ruby>を<ruby>作<rt>つく</rt></ruby>る<ruby>予定<rt>よてい</rt></ruby>です。"
+                    ]
+                },
+                quiz: {
+                    title: "文法練習 ④ (て形・辞書形・た形)",
+                    questions: [
+                        { jp: "ここでご<ruby>飯<rt>はん</rt></ruby>を（　　）はいけません。", options: ["<ruby>食<rt>た</rt></ruby>べる", "<ruby>食<rt>た</rt></ruby>べて", "<ruby>食<rt>た</rt></ruby>べた"], ans: 1, exp: "て形 + はいけません (不可以.../禁止)" },
+                        { jp: "<ruby>新<rt>あたら</rt></ruby>しい<ruby>商品<rt>しょうひん</rt></ruby>を（　　）のは<ruby>大変<rt>たいへん</rt></ruby>です。", options: ["<ruby>作<rt>つく</rt></ruby>る", "<ruby>作<rt>つく</rt></ruby>って", "<ruby>作<rt>つく</rt></ruby>った"], ans: 0, exp: "辞書形 + のは (把動詞名詞化：做...這件事)" },
+                        { jp: "<ruby>週末<rt>しゅうまつ</rt></ruby>はパンを<ruby>作<rt>つく</rt></ruby>っ（　　）、お<ruby>菓子<rt>かし</rt></ruby>を<ruby>食<rt>た</rt></ruby>べたりします。", options: ["たり", "て", "たる"], ans: 0, exp: "た形 + り〜たりします (又做...又做.../列舉)" }
+                    ]
+                }
+            },
+            {
+                q1: {
+                    id: "q9",
+                    jp: "<ruby>曾<rt>そう</rt></ruby>さんと<ruby>温<rt>おん</rt></ruby>さんが<ruby>一番<rt>いちばん</rt></ruby><ruby>好<rt>す</rt></ruby>きな<ruby>台湾<rt>たいわん</rt></ruby>の<ruby>料理<rt>りょうり</rt></ruby>は<ruby>何<rt>なん</rt></ruby>ですか。",
+                    cn: "曾桑和溫桑最喜歡的台灣料理是什麼？",
+                    hints: [
+                        "もちろん<ruby>魯肉飯<rt>ルーローハン</rt></ruby>です。ご<ruby>飯<rt>はん</rt></ruby>とよく<ruby>合<rt>あ</rt></ruby>いますから。",
+                        "<ruby>私<rt>わたし</rt></ruby>はおにぎり（<ruby>飯糰<rt>ファントゥアン</rt></ruby>）が<ruby>一番<rt>いちばん</rt></ruby><ruby>好<rt>す</rt></ruby>きです。"
+                    ]
+                },
+                q2: {
+                    id: "q10",
+                    jp: "<ruby>最後<rt>さいご</rt></ruby>に、<ruby>日本<rt>にほん</rt></ruby>の<ruby>皆<rt>みな</rt></ruby>さんにメッセージをお<ruby>願<rt>ねが</rt></ruby>いします。",
+                    cn: "最後，請對日本的大家說一段話。",
+                    hints: [
+                        "ぜひ「FOOD TAIPEI」に<ruby>来<rt>き</rt></ruby>て、<ruby>私<rt>わたし</rt></ruby>たちの<ruby>商品<rt>しょうひん</rt></ruby>を<ruby>見<rt>み</rt></ruby>てください！",
+                        "<ruby>台湾<rt>たいわん</rt></ruby>へ<ruby>旅行<rt>りょこう</rt></ruby>する<ruby>時<rt>とき</rt></ruby>、<ruby>美味<rt>おい</rt></ruby>しいお<ruby>米<rt>こめ</rt></ruby>を<ruby>食<rt>た</rt></ruby>べてみてくださいね！"
+                    ]
+                },
+                quiz: {
+                    title: "文法練習 ⑤ (て形・辞書形・た形)",
+                    questions: [
+                        { jp: "<ruby>展示会<rt>てんじかい</rt></ruby>で<ruby>写真<rt>しゃしん</rt></ruby>を（　　）もいいですか。", options: ["<ruby>撮<rt>と</rt></ruby>る", "<ruby>撮<rt>と</rt></ruby>って", "<ruby>撮<rt>と</rt></ruby>った"], ans: 1, exp: "て形 + もいいです (可以...嗎？/許可)" },
+                        { jp: "<ruby>台湾<rt>たいわん</rt></ruby>を（　　）<ruby>時<rt>とき</rt></ruby>、このお<ruby>米<rt>こめ</rt></ruby>を<ruby>買<rt>か</rt></ruby>いたいです。", options: ["<ruby>旅行<rt>りょこう</rt></ruby>する", "<ruby>旅行<rt>りょこう</rt></ruby>して", "<ruby>旅行<rt>りょこう</rt></ruby>した"], ans: 0, exp: "辞書形 + 時 (做...的時候)" },
+                        { jp: "<ruby>台北<rt>たいぺい</rt></ruby>に（　　）ら、<ruby>美味<rt>おい</rt></ruby>しいご<ruby>飯<rt>はん</rt></ruby>を<ruby>食<rt>た</rt></ruby>べましょう。", options: ["<ruby>着<rt>つ</rt></ruby>く", "<ruby>着<rt>つ</rt></ruby>いて", "<ruby>着<rt>つ</rt></ruby>いた"], ans: 2, exp: "た形 + ら (如果.../一...就...)" }
+                    ]
+                }
+            }
+        ];
+
+        function generateInterviewHTML(qData) {
+            return `
+                <div class="bg-white rounded-2xl shadow-md p-6 mb-6 border-2 border-orange-100">
+                    <div class="flex items-start mb-4">
+                        <span class="text-3xl mr-3">🎤</span>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800">${qData.jp}</h3>
+                            <p class="text-gray-500 text-sm mt-1">${qData.cn}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-bold mb-2 text-sm">✎ 你的回答 (先自由發揮)：</label>
+                        <textarea class="w-full border-2 border-gray-200 rounded-xl p-3 focus:outline-none focus:border-orange-400 focus:ring-1 focus:ring-orange-400 transition" rows="3" placeholder="請在此輸入你的日文回答草稿..."></textarea>
+                    </div>
+
+                    <button onclick="toggleHint(this, 'hint-${qData.id}')" class="bg-orange-400 hover:bg-orange-500 text-white font-bold py-2 px-4 rounded-full transition shadow-sm flex items-center">
+                        <span class="mr-2">💡</span> 點擊查看參考選項
+                    </button>
+
+                    <div id="hint-${qData.id}" class="hidden mt-4 bg-orange-50 rounded-xl p-4 border border-orange-200 fade-in">
+                        <p class="text-orange-800 font-bold mb-2">參考說法 (可選擇適合的來修改)：</p>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                            ${qData.hints.map(hint => `<li>${hint}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateQuizHTML(quizData, blockIndex) {
+            let questionsHTML = quizData.questions.map((q, qIndex) => {
+                let optionsHTML = q.options.map((opt, optIndex) => `
+                    <label class="cursor-pointer relative flex-1">
+                        <input type="radio" name="quiz_${blockIndex}_${qIndex}" value="${optIndex}" class="peer sr-only">
+                        <span class="block text-center py-2 px-4 rounded-lg border-2 border-gray-200 peer-checked:bg-green-100 peer-checked:border-green-500 hover:bg-gray-50 transition text-gray-700 font-medium">
+                            ${opt}
+                        </span>
+                    </label>
+                `).join('');
+
+                return `
+                    <div class="mb-6 pb-4 border-b border-green-100 last:border-0 last:mb-0 last:pb-0">
+                        <p class="font-bold text-lg text-gray-800 mb-3">Q${qIndex + 1}. ${q.jp.replace('（　　）', '<span class="inline-block w-16 border-b-2 border-gray-400 text-center text-green-700"></span>')}</p>
+                        <div class="flex flex-col sm:flex-row gap-3 mb-3">
+                            ${optionsHTML}
+                        </div>
+                        <div id="result_${blockIndex}_${qIndex}" class="text-sm mt-2 min-h-[24px]"></div>
+                    </div>
+                `;
+            }).join('');
+
+            return `
+                <div class="bg-emerald-50 rounded-2xl shadow-md p-6 mb-10 border-2 border-emerald-200">
+                    <div class="flex items-center mb-5 border-b-2 border-emerald-200 pb-2">
+                        <span class="text-3xl mr-3">✍️</span>
+                        <h3 class="text-2xl font-bold text-emerald-800">${quizData.title}</h3>
+                    </div>
+                    
+                    ${questionsHTML}
+
+                    <div class="mt-6 text-center">
+                        <button onclick="checkQuiz(${blockIndex})" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-8 rounded-full transition shadow-md text-lg">
+                            對答案 ✓
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderApp() {
+            const container = document.getElementById('app-container');
+            let htmlContent = '';
+
+            appData.forEach((block, index) => {
+                htmlContent += `<div class="mb-8">`;
+                htmlContent += generateInterviewHTML(block.q1);
+                htmlContent += generateInterviewHTML(block.q2);
+                htmlContent += generateQuizHTML(block.quiz, index);
+                htmlContent += `</div>`;
+            });
+
+            // Add Footer
+            htmlContent += `
+                <div class="text-center mt-12 text-gray-500 text-sm">
+                    <p>✨ 祝 曾桑與溫桑 FOOD TAIPEI 展出大成功！ ✨</p>
+                </div>
+            `;
+
+            container.innerHTML = htmlContent;
+        }
+
+        function toggleHint(btn, targetId) {
+            const target = document.getElementById(targetId);
+            if (target.classList.contains('hidden')) {
+                target.classList.remove('hidden');
+                btn.innerHTML = '<span class="mr-2">🔼</span> 隱藏參考選項';
+                btn.classList.remove('bg-orange-400', 'hover:bg-orange-500');
+                btn.classList.add('bg-gray-400', 'hover:bg-gray-500');
+            } else {
+                target.classList.add('hidden');
+                btn.innerHTML = '<span class="mr-2">💡</span> 點擊查看參考選項';
+                btn.classList.remove('bg-gray-400', 'hover:bg-gray-500');
+                btn.classList.add('bg-orange-400', 'hover:bg-orange-500');
+            }
+        }
+
+        function checkQuiz(blockIndex) {
+            const quizData = appData[blockIndex].quiz.questions;
+            
+            quizData.forEach((q, qIndex) => {
+                const selected = document.querySelector(`input[name="quiz_${blockIndex}_${qIndex}"]:checked`);
+                const resultDiv = document.getElementById(`result_${blockIndex}_${qIndex}`);
+                const questionTextContainer = resultDiv.parentElement.querySelector('p span');
+                
+                if (selected) {
+                    const selectedVal = parseInt(selected.value);
+                    questionTextContainer.textContent = q.options[selectedVal]; // 填入文字到空格
+
+                    if (selectedVal === q.ans) {
+                        resultDiv.innerHTML = `
+                            <div class="p-3 bg-green-100 text-green-800 rounded-lg border border-green-300 flex items-start fade-in">
+                                <span class="mr-2">✅</span>
+                                <div>
+                                    <span class="font-bold">正解！</span> 
+                                    <p class="text-sm mt-1 text-green-700">${q.exp}</p>
+                                </div>
+                            </div>`;
+                    } else {
+                        resultDiv.innerHTML = `
+                            <div class="p-3 bg-red-50 text-red-800 rounded-lg border border-red-200 flex items-start fade-in">
+                                <span class="mr-2">❌</span>
+                                <div>
+                                    <span class="font-bold">不對喔～</span> 
+                                    <p class="text-sm mt-1 text-red-600">正確答案是：<strong>${q.options[q.ans]}</strong>。因為是「${q.exp}」。</p>
+                                </div>
+                            </div>`;
+                    }
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="p-2 bg-yellow-50 text-yellow-800 rounded-lg border border-yellow-200 fade-in">
+                            ⚠️ 請選擇一個答案喔！
+                        </div>`;
+                }
+            });
+        }
+
+        window.onload = function() {
+            renderApp();
+        };
+    </script>
+</body>
+</html>
